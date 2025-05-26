@@ -4,9 +4,9 @@ import torch
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 
-from .Transformer import Transformer
-from .Data import TranslationDataset, create_toy_dataset
-from .train import train_transformer, evaluate_transformer, translate
+from Transformer import Transformer
+from Data import TranslationDataset, create_toy_dataset
+from train import train_transformer, evaluate_transformer, translate
 
 def main():
     # Set device
@@ -48,12 +48,12 @@ def main():
         num_heads=2,
         d_ff=128,
         num_layers=2,
-        dropout=0.1
+        dropout=0.2
     ).to(device)
     
     # Define optimizer and loss function
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0001)
-    criterion = nn.CrossEntropyLoss(ignore_index=src_vocab[''])
+    criterion = nn.CrossEntropyLoss(ignore_index=src_vocab['<pad>'])
     
     # Training loop
     num_epochs = 100
@@ -89,9 +89,9 @@ def main():
     
     # Test translation
     test_sentences = [
-        'hello how are you',
-        'i love programming',
-        'thank you very much'
+        'Hello !',
+        'Stop !',
+        'Wait !'
     ]
     
     model.load_state_dict(torch.load('best_transformer_model.pth'))

@@ -1,8 +1,7 @@
 from torch import nn
 
-
 class MultiHeadAttention(nn.Module):
-    def __init__(self, d_model, num_heads):
+    def __init__(self, d_model, num_heads, dropout=0.1):
         super(MultiHeadAttention, self).__init__()
         assert d_model % num_heads == 0, "d_model must be divisible by num_heads"
 
@@ -48,4 +47,4 @@ class MultiHeadAttention(nn.Module):
         attn_output = attn_output.transpose(1, 2).contiguous().view(batch_size, -1, self.d_model)
         output = self.W_o(attn_output)
         
-        return output       
+        return output      

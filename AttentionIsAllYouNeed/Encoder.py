@@ -1,11 +1,11 @@
 from torch import nn
-from .Attention import MultiHeadAttention
-from .Utils import PositionalEncoding, MLP
+from Attention import MultiHeadAttention
+from Utils import PositionalEncoding, MLP
 
 class EncoderLayer(nn.Module):
     def __init__(self, d_model, num_heads, d_ff, dropout=0.1):
         super(EncoderLayer, self).__init__()
-        self.self_attn = MultiHeadAttention(d_model, num_heads, dropout=dropout)
+        self.self_attn = MultiHeadAttention(d_model, num_heads)
         self.mlp = MLP(d_model, d_ff)
         self.norm1 = nn.LayerNorm(d_model)
         self.norm2 = nn.LayerNorm(d_model)
@@ -16,7 +16,7 @@ class EncoderLayer(nn.Module):
         x = self.norm1(x + self.dropout(attn_output)) # Add residual connection
 
         # Feed-forward network with residual connection and layer normalization
-        ff_output = self.ff(x)
+        ff_output = self.mlp(x)
         x = self.norm2(x + self.dropout(ff_output))
 
         return x
@@ -43,4 +43,3 @@ class Encoder(nn.Module):
             x = layer(x, mask=mask)
 
         return x
-        

@@ -1,0 +1,48 @@
+Go.	Va !
+Run!	Cours !
+Run!	Courez !
+Wow!	Ça alors !
+Fire!	Au feu !
+Help!	À l'aide !
+Jump.	Saute.
+Stop!	Stop !
+Stop!	Arrête-toi !
+Wait!	Attends !
+Wait!	Attendez !
+I see.	Je comprends.
+I try.	J'essaye.
+I won!	J'ai gagné !
+I won!	Je l'ai emporté !
+Oh no!	Oh non !
+Attack!	Attaquez !
+Cheers!	Santé !
+Get up.	Lève-toi.
+Got it?	Compris ?
+Hop in.	Montez.
+Hug me.	Serrez-moi dans vos bras !
+I fell.	Je suis tombé.
+I know.	Je sais.
+I left.	Je suis parti.
+I lost.	J'ai perdu.
+I'm 19.	J'ai 19 ans.
+I'm OK.	Ça va.
+Listen.	Écoutez !
+No way!	C'est pas possible !
+Really?	Vraiment ?
+Thanks.	Merci !
+We try.	On essaye.
+We won.	Nous avons gagné.
+Ask Tom.	Demande à Tom.
+Awesome!	Fantastique !
+Be calm.	Sois calme !
+Be fair.	Sois juste !
+Be kind.	Sois gentil.
+Be nice.	Soyez gentils !
+Beat it.	Dégage !
+Call me.	Appelle-moi !
+Call us.	Appelle-nous !
+Come in.	Entrez !
+Drop it!	Laisse tomber !
+Get out!	Sortez !
+Get out.	Sors.
+Go away!	Dégage !

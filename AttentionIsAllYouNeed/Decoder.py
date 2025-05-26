@@ -1,6 +1,8 @@
 from torch import nn
-from .Attention import MultiHeadAttention
-from .Utils import PositionalEncoding, MLP
+from Attention import MultiHeadAttention
+from Utils import PositionalEncoding, MLP
+
+from torch import nn
 
 class DecoderLayer(nn.Module):
     def __init__(self, d_model, num_heads, d_ff, dropout=0.1):  

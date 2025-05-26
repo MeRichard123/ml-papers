@@ -14,57 +14,54 @@ class TranslationDataset(Dataset):
     
     def __getitem__(self, idx):
         # Convert source sentence to indices
-        src_indices = [self.src_vocab.get(word, self.src_vocab['']) for word in self.src_sentences[idx].split()]
-        src_indices = [self.src_vocab['']] + src_indices + [self.src_vocab['']]
+        src_tokens = self.src_sentences[idx].split()
+        src_indices = [self.src_vocab['<sos>']]  # Start with <sos>
+        src_indices.extend([self.src_vocab.get(word, self.src_vocab['<unk>']) for word in src_tokens])
+        src_indices.append(self.src_vocab['<eos>'])  # End with <eos>
         
         # Convert target sentence to indices
-        tgt_indices = [self.tgt_vocab.get(word, self.tgt_vocab['']) for word in self.tgt_sentences[idx].split()]
-        tgt_indices = [self.tgt_vocab['']] + tgt_indices + [self.tgt_vocab['']]
+        tgt_tokens = self.tgt_sentences[idx].split()
+        tgt_indices = [self.tgt_vocab['<sos>']]  # Start with <sos>
+        tgt_indices.extend([self.tgt_vocab.get(word, self.tgt_vocab['<unk>']) for word in tgt_tokens])
+        tgt_indices.append(self.tgt_vocab['<eos>'])  # End with <eos>
         
         # Pad sequences
         src_indices = src_indices[:self.max_len]
         tgt_indices = tgt_indices[:self.max_len]
         
-        src_indices = src_indices + [self.src_vocab['']] * (self.max_len - len(src_indices))
-        tgt_indices = tgt_indices + [self.tgt_vocab['']] * (self.max_len - len(tgt_indices))
+        src_indices = src_indices + [self.src_vocab['<pad>']] * (self.max_len - len(src_indices))
+        tgt_indices = tgt_indices + [self.tgt_vocab['<pad>']] * (self.max_len - len(tgt_indices))
         
         return {
             'src': torch.tensor(src_indices, dtype=torch.long),
-            'tgt': torch.tensor(tgt_indices[:-1], dtype=torch.long), # Input to decoder
-            'tgt_y': torch.tensor(tgt_indices[1:], dtype=torch.long) # Expected output
+            'tgt': torch.tensor(tgt_indices[:-1], dtype=torch.long),  # Input to decoder
+            'tgt_y': torch.tensor(tgt_indices[1:], dtype=torch.long)  # Expected output
         }
-    
+
+def sanitise(text):
+    import re
+    import unicodedata
+
+    text = unicodedata.normalize('NFD', text)
+    text = ''.join([c for c in text if not unicodedata.category(c) == 'Mn'])
+    text = re.sub(r'[^A-Za-z0-9 ]+', '', text)
+    return text
+
 def create_toy_dataset():
     # Simple English to French translation pairs
-    eng_sentences = [
-        'hello how are you',
-        'i am fine thank you',
-        'what is your name',
-        'my name is john',
-        'where do you live',
-        'i live in new york',
-        'i love programming',
-        'this is a test',
-        'please translate this',
-        'thank you very much'
-    ]
-    
-    fr_sentences = [
-        'bonjour comment vas tu',
-        'je vais bien merci',
-        'quel est ton nom',
-        'je m appelle john',
-        'où habites tu',
-        'j habite à new york',
-        'j aime programmer',
-        'c est un test',
-        's il te plaît traduis cela',
-        'merci beaucoup'
-    ]
-    
-    # Create vocabularies
-    src_vocab = {'': 0, '': 1, '': 2, '': 3}
-    tgt_vocab = {'': 0, '': 1, '': 2, '': 3}
+    eng_sentences = []
+    fr_sentences = []
+    with open('AttentionIsAllYouNeed\\fra.txt', 'r', encoding='utf-8') as f:
+        pairs = f.readlines()
+
+        for pair in pairs:
+            eng, fr = pair.split('\t')
+            eng_sentences.append(sanitise(eng))
+            fr_sentences.append(sanitise(fr))
+
+    # Create vocabularies with special tokens
+    src_vocab = {'<pad>': 0, '<sos>': 1, '<eos>': 2, '<unk>': 3}
+    tgt_vocab = {'<pad>': 0, '<sos>': 1, '<eos>': 2, '<unk>': 3}
     
     # Add words to vocabularies
     i = 4
