@@ -1,7 +1,7 @@
 from torch import nn
 import torch
 
-class PositionalEncoding(nn.Module): # RoPE
+class PositionalEncoding(nn.Module): # Sinusoidal
     def __init__(self, d_model, max_len=5000):
         super(PositionalEncoding, self).__init__()
 
